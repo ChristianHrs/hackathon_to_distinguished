@@ -101,7 +101,7 @@ Different status codes:
 ### Sources Used
 [What's the right way to parse HTTP packets?](https://stackoverflow.com/questions/17460819/whats-the-right-way-to-parse-http-packets)
 
-[RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1](https://www.rfc-editor.org/rfc/rfc2616
+[RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1](https://www.rfc-editor.org/rfc/rfc2616)
 
 [RFC 822: STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES](https://datatracker.ietf.org/doc/html/rfc822#section-4)
 
@@ -121,17 +121,29 @@ Handling multiple connections:
 
 ### Handling multiple connections on a single thread:
 ##### **Server:**
-- In a while loop (maybe a while server fd is available loop), listen for client connections.
-    - If anyone is attempting to connect, add the connection to a list/queue of fd (Use the pollfd struct).
-    - Open another loop that cycles through the list and checks each fd to see if it’s attempting to send something (POLLOUT I think).
-        - If it is, receive that message, and store it.
-    - Open another loop and cycle through the fd list to check
-        - if any are ready to receive (POLLIN). If they are, send the stored message.
-	- *IF NEEDED:* Loop through the clients to check if they've disconnected.
+- In a WHILE loop (maybe a while server fd is available loop), 
+	- listen for client connections.
+    - IF anyone is attempting to connect:
+	    - Add the connection to a list/queue of fd (Use the pollfd struct).
+    - Open a FOR loop that cycles through the list and 
+	    - Checks each fd to see if it’s attempting to send something (POLLOUT I think) - IF yes:
+	        - Receive that message
+	        - Store the message
+    - Open a FOR loop and cycle through the fd list:
+        - Check if any are ready to receive (POLLIN) - IF yes:
+		    - Send the stored message.
+	- *IF NEEDED:* FOR loop through the clients:
+		- Check if they've disconnected.
 		- If the client is disconnected, remove it from the list.
 
-To add later for improvements:
+*To add later for improvements:*
 - Don't limit the amount of clients. Once the limit is reached, increase the size
 
 ##### **Client**:
-- 
+- Create a pollfd for the server fd. 
+- In a WHILE loop
+	- Check IF server is trying to send, (POLLOUT) - IF yes:
+		- Receive the message and print it on screen
+	- Check IF server is ready to receive (POLLIN) - IF yes:
+		- Create the message sending mechanism
+		- Send the message entered by the user
