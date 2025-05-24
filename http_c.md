@@ -100,12 +100,17 @@ Different status codes:
 
 ### Sources Used
 [What's the right way to parse HTTP packets?](https://stackoverflow.com/questions/17460819/whats-the-right-way-to-parse-http-packets)
+
 [RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1](https://www.rfc-editor.org/rfc/rfc2616
+
 [RFC 822: STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES](https://datatracker.ietf.org/doc/html/rfc822#section-4)
+
 [RFC 1945: Hypertext Transfer Protocol](https://datatracker.ietf.org/doc/html/rfc1945#page-21)
 
 [example polliing server](https://github.com/64/hh/tree/master)
+
 [associated reddit thread](https://www.reddit.com/r/C_Programming/comments/7bnscf/multithreaded_epoll_server_design/)
+
 # chris/redirectMsg
 Handling multiple connections:
 - The initial fd you get using sockfd can use listen to keep track of a backlog of items but you can only accept a connection from one at a time. That's why the `accept()` function doesn't have the `BACKLOG` parameter. 
@@ -114,8 +119,8 @@ Handling multiple connections:
 	- Send the client to the back of the queue after you receive a message from it. (going to explore this idea)
 
 
-#### Handling multiple connections on a single thread:
-**Server:**
+### Handling multiple connections on a single thread:
+##### **Server:**
 - In a while loop (maybe a while server fd is available loop), listen for client connections.
     - If anyone is attempting to connect, add the connection to a list/queue of fd (Use the pollfd struct).
     - Open another loop that cycles through the list and checks each fd to see if it’s attempting to send something (POLLOUT I think).
@@ -128,5 +133,5 @@ Handling multiple connections:
 To add later for improvements:
 - Don't limit the amount of clients. Once the limit is reached, increase the size
 
-**Client**:
+##### **Client**:
 - 
